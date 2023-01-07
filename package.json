@@ -1,0 +1,24 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "OOP Challenge 10: Team Profile Generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edgarmartinez1212/Team-Profile-Generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edgarmartinez1212/Team-Profile-Generator/issues"
+  },
+  "homepage": "https://github.com/edgarmartinez1212/Team-Profile-Generator#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "jest": "^29.3.1"
+  }
+}
