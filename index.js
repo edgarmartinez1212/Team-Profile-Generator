@@ -5,8 +5,7 @@ const Intern = require("./lib/Intern");
 const fs = require("fs");
 const team = [];
 
-// 1. Manager: manager name, employee ID, email address, office number
-// Ask questions to populate HTML code
+// Create Manager: ask questions to populate manager
 function createManager() {
   inquirer
     .prompt([
@@ -34,17 +33,17 @@ function createManager() {
     .then((response) => {
       console.log(response);
 
-      // Create a new Manager Object from Manager Classs
+      // create a new Manager Object from Manager Classs
       const manager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerNumber);
       // push manager onto team[]
       team.push(manager);
 
+      // create team
       createTeam();
     });
 }
 
-// 2a. Select Engineer: engineer name, ID, email, GitHub username
-// back to menu
+// Create Engineer
 function createEngineer() {
   inquirer
     .prompt([
@@ -77,8 +76,7 @@ function createEngineer() {
     });
 }
 
-// 2b. Select Intern: intern's name, ID, email, school
-// back to menu
+// Create Intern
 function createIntern() {
   inquirer
     .prompt([
@@ -102,33 +100,17 @@ function createIntern() {
         message: "Enter Intern's school",
         name: "internSchool",
       },
-      //   {
-      //     type: "list",
-      //     message: "Add Engineer, Intern, or Finish?",
-      //     name: "mainMenu",
-      //     choices: ["Engineer", "Intern", "Finish"],
-      //   },
     ])
     .then((response) => {
       console.log(response);
-
-      // Create a new Manager Object from Manager Classs
       const intern = new Intern(response.internName, response.internId, response.internEmail, response.internSchool);
       team.push(intern);
-      // push manager onto Team[]
 
       createTeam();
-
-      //   const parseHTML = generateHTML(response);
-
-      // Write to File
-      //   fs.writeFile("team.html", parseHTML, (err) => (err ? console.error(err) : console.log("Success!")));
     });
 }
 
-// 2. presented with menu to add: Engineer, Intern, or Finish
-// 2c. Finish: exit application, HTML is generated
-// Generate HTML File
+// Create Team: Will continue to loop until user selects "Finish"
 function createTeam() {
   inquirer
     .prompt([
@@ -140,7 +122,6 @@ function createTeam() {
       },
     ])
     .then((response) => {
-      // console.log(team);
       if (response.mainMenu === "Engineer") {
         createEngineer();
       } else if (response.mainMenu === "Intern") {
@@ -154,6 +135,7 @@ function createTeam() {
 
 // Generate HTML code
 const generateHTML = (team) => {
+  // Create manager template
   const managerTemplate = `<div class="manager-card">
 <h3 class="employee-name">${team[0].getName()}</h3>
 <h4 class="title">Manager</h4>
@@ -162,6 +144,7 @@ const generateHTML = (team) => {
 <div>${team[0].getOffice()}</div>
 </div>`;
 
+  // create engineer template
   const engineers = team.filter((employee) => employee.getRole() === "Engineer");
   let engineerTemplate = "";
   engineers.forEach((engineer) => {
@@ -174,6 +157,7 @@ const generateHTML = (team) => {
 </div>`;
   });
 
+  // create intern template
   const interns = team.filter((employee) => employee.getRole() === "Intern");
   let internTemplate = "";
   interns.forEach((intern) => {
@@ -186,6 +170,7 @@ const generateHTML = (team) => {
 </div>`;
   });
 
+  // create document and add team templates to html document (team.html)
   const document = `<!DOCTYPE html>
 <html lang="en">
 <head>
