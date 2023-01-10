@@ -1,8 +1,8 @@
 const inquirer = require("inquirer");
-const fs = require("fs");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+const fs = require("fs");
 const team = [];
 
 // 1. Manager: manager name, employee ID, email address, office number
@@ -30,12 +30,6 @@ function createManager() {
         message: "Enter team manager's office number",
         name: "managerNumber",
       },
-      //   {
-      //     type: "list",
-      //     message: "Add Engineer, Intern, or Finish?",
-      //     name: "mainMenu",
-      //     choices: ["Engineer", "Intern", "Finish"],
-      //   },
     ])
     .then((response) => {
       console.log(response);
@@ -46,37 +40,6 @@ function createManager() {
       team.push(manager);
 
       createTeam();
-
-      //   const parseHTML = generateHTML(response);
-
-      // Write to File
-      //   fs.writeFile("team.html", parseHTML, (err) => (err ? console.error(err) : console.log("Success!")));
-    });
-}
-
-// 2. presented with menu to add: Engineer, Intern, or Finish
-// 2c. Finish: exit application, HTML is generated
-// Generate HTML File
-function createTeam() {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        message: "Add Engineer, Intern, or Finish?",
-        name: "mainMenu",
-        choices: ["Engineer", "Intern", "Finish"],
-      },
-    ])
-    .then((response) => {
-      // console.log(team);
-      if (response.mainMenu === "Engineer") {
-        createEngineer();
-      } else if (response.mainMenu === "Intern") {
-        createIntern();
-      } else {
-        const parseHTML = generateHTML(team);
-        fs.writeFile("team.html", parseHTML, (err) => (err ? console.error(err) : console.log("Success!")));
-      }
     });
 }
 
@@ -163,12 +126,39 @@ function createIntern() {
     });
 }
 
+// 2. presented with menu to add: Engineer, Intern, or Finish
+// 2c. Finish: exit application, HTML is generated
+// Generate HTML File
+function createTeam() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        message: "Add Engineer, Intern, or Finish?",
+        name: "mainMenu",
+        choices: ["Engineer", "Intern", "Finish"],
+      },
+    ])
+    .then((response) => {
+      // console.log(team);
+      if (response.mainMenu === "Engineer") {
+        createEngineer();
+      } else if (response.mainMenu === "Intern") {
+        createIntern();
+      } else {
+        const parseHTML = generateHTML(team);
+        fs.writeFile("team.html", parseHTML, (err) => (err ? console.error(err) : console.log("Success!")));
+      }
+    });
+}
+
 // Generate HTML code
 const generateHTML = (team) => {
   const managerTemplate = `<div class="manager-card">
-<div>${team[0].getName()}</div>
+<h3 class="employee-name">${team[0].getName()}</h3>
+<h4 class="title">Manager</h4>
 <div>${team[0].getId()}</div>
-<div>${team[0].getEmail()}</div>
+<div><a href="mailto:${team[0].getEmail()}">${team[0].getEmail()}</a></div>
 <div>${team[0].getOffice()}</div>
 </div>`;
 
@@ -176,10 +166,11 @@ const generateHTML = (team) => {
   let engineerTemplate = "";
   engineers.forEach((engineer) => {
     engineerTemplate += `<div class="engineer-card">
-<div>${engineer.getName()}</div>
+<h3 class="employee-name">${engineer.getName()}</h3>
+<h4 class="title">Engineer</h4>
 <div>${engineer.getId()}</div>
-<div>${engineer.getEmail()}</div>
-<div>${engineer.getGithub()}</div>
+<div><a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></div>
+<div><a href="https://github.com/${engineer.getGithub()}" target="_blank">${engineer.getGithub()}</a></div>
 </div>`;
   });
 
@@ -187,9 +178,10 @@ const generateHTML = (team) => {
   let internTemplate = "";
   interns.forEach((intern) => {
     internTemplate += `<div class="intern-card">
-<div>${intern.getName()}</div>
+<h3 class="employee-name">${intern.getName()}</h3>
+<h4 class="title">Intern</h4>
 <div>${intern.getId()}</div>
-<div>${intern.getEmail()}</div>
+<div><a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></div>
 <div>${intern.getSchool()}</div>
 </div>`;
   });
@@ -200,12 +192,16 @@ const generateHTML = (team) => {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Team Profile Generator</title>
 </head>
 <body>
+<h1 class="heading">Team Profile</h1>
 ${managerTemplate}
+<div class="employee-wrapper">
 ${engineerTemplate}
 ${internTemplate}
+</div>
 </body>
 </html>`;
 
